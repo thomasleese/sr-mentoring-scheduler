@@ -4,20 +4,16 @@
   <head>
     <meta charset="UTF-8" />
 
-    <title>Mentor Schedule</title>
+    <title>Mentoring Scheduler</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
   </head>
 
   <body>
     <div class="container m-t-3 m-b-3">
-      <h1>Mentor Schedule</h1>
-      <p class="lead">Yay robots! Yay mentors! Yay teams!</p>
+      <h1>Mentoring Scheduler</h1>
+      <p class="lead m-b-2">Yay robots! Yay mentors! Yay teams!</p>
 
-      <hr class="m-t-2 m-b-2" />
-
-      <h2>Mentors</h2>
       {% for mentor in mentors | sort(attribute='name') %}
         <div class="card">
           <div class="card-block">
@@ -32,9 +28,7 @@
                 <th>Distance</th>
                 <th>Meeting Time</th>
                 <th>Time to get there</th>
-                <th>Speed to get there</th>
                 <th>Time to get back</th>
-                <th>Speed to get back</th>
               </tr>
             </thead>
 
@@ -45,45 +39,13 @@
                   <td>{{ suitable_mentor.team.distance_km | round(1) }} km</td>
                   <td>{{ suitable_mentor.meeting_time }}</td>
                   <td>{{ suitable_mentor.journey_there }}</td>
-                  <td>{{ suitable_mentor.journey_there_speed | round(1) }} km/h</td>
                   <td>{{ suitable_mentor.journey_back }}</td>
-                  <td>{{ suitable_mentor.journey_back_speed | round(1) }} km/h</td>
                 </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
       {% endfor %}
-
-      <hr class="m-t-2 m-b-2" />
-
-      <h2>Big table</h2>
-      <table class="table m-t-2">
-        <thead>
-          <tr>
-            <th>TLA</th>
-            <th>Distance</th>
-            <th>Plausible Mentors</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for team in teams | sort(attribute='tla') %}
-            <tr>
-              <td>{{ team.tla }}</td>
-              <td>{% if team.distance is not none %}{{ team.distance_km | round(2) }} km{% endif %}</td>
-              <td>
-                {% for suitable_mentor in team.find_suitable_mentors(mentors) %}
-                  <span class="m-l-2">{{ suitable_mentor.mentor.name }}</span>
-                  {% if suitable_mentor.mentor.rookie %}
-                    <span class="label label-warning">Rookie</span>
-                  {% endif %}
-                {% endfor %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
     </div>
   </body>
 
