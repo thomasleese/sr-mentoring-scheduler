@@ -103,6 +103,9 @@ class Team:
             if not self.travel_time:
                 print('Warning: {} has no travel time.'.format(self.tla))
 
+    def __str__(self):
+        return self.tla
+
     def find_suitable_mentors(self, all_mentors):
         """Return a list of suitable mentors from all the mentors."""
 
@@ -121,16 +124,26 @@ class Mentor:
     name : str
         The name of the mentor.
 
+    rookie : bool
+        Whether they are a new mentor.
+
     free_times : list[str]
         A list of parseable time periods.
     """
 
-    def __init__(self, name, free_times=None):
+    def __init__(self, name, rookie=False, free_times=None):
         if free_times is None:
             free_times = []
 
         self.name = name
+        self.rookie = rookie
         self.free_times = [TimePeriod(s) for s in free_times]
+
+    def __str__(self):
+        if self.rookie:
+            return '{} (R)'.format(self.name)
+        else:
+            return self.name
 
     def is_suitable_for(self, team):
         """Check whether a mentor is suitable for a team."""
@@ -150,9 +163,12 @@ def schedule(teams, mentors):
             continue
 
         suitable_mentors = team.find_suitable_mentors(mentors)
+        if all(mentor.rookie for mentor in suitable_mentors):
+            suitable_mentors = []
+
         print('{}: {}'
-              .format(team.tla,
-                      ', '.join(mentor.name for mentor in suitable_mentors)))
+              .format(team,
+                      ', '.join(str(mentor) for mentor in suitable_mentors)))
 
 
 def main():
