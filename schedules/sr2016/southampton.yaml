@@ -69,6 +69,25 @@ mentors:
       - Fri 08:00-11:00
       - Fri 12:00-13:00
       - Fri 14:00-21:00
+  Andy:
+    free_times:
+      - Mon 14:00-23:59
+      - Wed 12:00-17:00
+      - Fri 11:00-14:00
+      - Fri 15:00-23:59
+      - Sat 06:00-23:59
+  Samson:
+    free_times:
+      - Mon 14:00-23:59
+      - Wed 12:00-17:00
+      - Fri 11:00-14:00
+      - Fri 15:00-23:59
+  Ollie:
+    free_times:
+      - Mon 14:00-23:59
+      - Wed 12:00-17:00
+      - Fri 11:00-14:00
+      - Fri 15:00-23:59
   James:
     rookie: true
     free_times:
@@ -94,3 +113,7 @@ mentors:
       - Wed 13:00-23:59
       - Tue 14:00-23:59
       - Thu 14:00-23:59
+  Ed:
+    rookie: true
+    free_times:
+      - Wed 13:00-23:59
