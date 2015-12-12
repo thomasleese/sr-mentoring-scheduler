@@ -7,4 +7,5 @@ A tool to schedule mentoring.
 
     $ pyvenv venv
     $ source venv/bin/activate
+    $ pip install -r requirements.txt
     $ python schedule.py sr2016
