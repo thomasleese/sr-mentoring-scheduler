@@ -87,19 +87,21 @@ class Team:
         A list of parseable time periods.
     """
 
-    def __init__(self, tla, travel_time=None, meeting_times=None):
+    def __init__(self, tla, arranged=False, travel_time=None, meeting_times=None):
         if meeting_times is None:
             meeting_times = []
 
         self.tla = tla
+        self.arranged = arranged
         self.travel_time = travel_time
         self.meeting_times = [TimePeriod(s, travel_time)
                               for s in meeting_times]
 
-        if not self.meeting_times:
-            print('Warning: {} has no meeting times.'.format(self.tla))
-        if not self.travel_time:
-            print('Warning: {} has no travel time.'.format(self.tla))
+        if not self.arranged:
+            if not self.meeting_times:
+                print('Warning: {} has no meeting times.'.format(self.tla))
+            if not self.travel_time:
+                print('Warning: {} has no travel time.'.format(self.tla))
 
     def find_suitable_mentors(self, all_mentors):
         """Return a list of suitable mentors from all the mentors."""
@@ -144,6 +146,9 @@ def schedule(teams, mentors):
     """Schedule mentoring for some teams and some mentors."""
 
     for team in teams:
+        if team.arranged:
+            continue
+
         suitable_mentors = team.find_suitable_mentors(mentors)
         print('{}: {}'
               .format(team.tla,
