@@ -57,14 +57,14 @@ class TimePeriod:
         return self.start_time - self.travel_time, \
             self.end_time + self.travel_time
 
-    def fits_in(self, other_period, include_travel_time=False):
+    def fits_in(self, other_period):
         """Check with this time period fits into the other time period."""
 
         if self.day != other_period.day:
             return False
 
         my_times = self.get_times()
-        other_times = self.get_times()
+        other_times = other_period.get_times()
 
         return my_times[0] >= other_times[0] \
             and my_times[1] <= other_times[1]
