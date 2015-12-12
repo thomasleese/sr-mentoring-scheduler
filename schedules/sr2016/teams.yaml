@@ -1,0 +1,58 @@
+  BDF:
+    travel_time: 180
+    meeting_times:
+      - Thursday 16:30-17:30
+  BPV:
+    travel_time: 45
+    meeting_times:
+      - Wednesday 08:45-10:15
+  BRK:
+    travel_time: 65
+    meeting_times:
+      - Wednesday 14:10-16:20
+  BWS:
+    travel_time: 70
+    meeting_times:
+      - Monday 12:00-13:00
+      - Wednesday 12:00-13:00
+  CAT:
+    travel_time: 240
+    meeting_times:
+      - Wednesday 17:00-18:00
+  CRB:
+    travel_time: 0
+    meeting_times: []
+  HRS:
+    travel_time: 210
+    meeting_times:
+      - Wed 15:00-16:00
+      - Sat 10:00-16:00
+  HSO:
+    travel_time: 180
+    meeting_times:
+      - Tues 12:00-13:00
+      - Tues 16:00-18:00
+      - Fri 12:00-13:00
+      - Fri 16:00-18:00
+  KDE:
+    arranged: true
+    meeting_times:
+      - Fri 19:00-20:00
+  QMC:
+    travel_time: 90
+    meeting_times:
+      - Wed 15:10-16:30
+  RGS:
+    travel_time: 100
+    meeting_times:
+      - Tue 16:00-17:00
+  SWI:
+    travel_time: 60
+    meeting_times: []
+  TLC:
+    arranged: true
+    meeting_times: []
+  TTN:
+    travel_time: 25
+    meeting_times:
+      - Wed 11:50-12:50

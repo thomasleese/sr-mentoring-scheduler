@@ -200,14 +200,19 @@ def main():
     parser.add_argument('schedule')
     args = parser.parse_args()
 
-    path = os.path.join('schedules', args.schedule) + '.yaml'
-    with open(path) as file:
+    path = os.path.join('schedules', args.schedule)
+
+    with open(os.path.join(path, 'teams.yaml')) as file:
         data = yaml.safe_load(file)
         teams = [Team(tla, **team_data)
-                 for tla, team_data in data['teams'].items()]
+                 for tla, team_data in data.items()]
+
+    with open(os.path.join(path, 'mentors.yaml')) as file:
+        data = yaml.safe_load(file)
         mentors = [Mentor(name, **mentor_data)
-                   for name, mentor_data in data['mentors'].items()]
-        schedule(teams, mentors)
+                   for name, mentor_data in data.items()]
+
+    schedule(teams, mentors)
 
 
 if __name__ == '__main__':

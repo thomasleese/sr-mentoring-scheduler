@@ -1,0 +1,58 @@
+Tom:
+  free_times:
+    - Mon 10:00-19:00
+    - Tue 11:00-21:00
+    - Wed 08:00-13:00
+    - Thu 08:00-15:00
+    - Thu 16:00-21:00
+    - Fri 08:00-11:00
+    - Fri 12:00-13:00
+    - Fri 14:00-21:00
+Andy:
+  free_times:
+    - Mon 14:00-23:59
+    - Wed 12:00-17:00
+    - Fri 11:00-14:00
+    - Fri 15:00-23:59
+    - Sat 06:00-23:59
+Samson:
+  free_times:
+    - Mon 14:00-23:59
+    - Wed 12:00-17:00
+    - Fri 11:00-14:00
+    - Fri 15:00-23:59
+Ollie:
+  free_times:
+    - Mon 14:00-23:59
+    - Wed 12:00-17:00
+    - Fri 11:00-14:00
+    - Fri 15:00-23:59
+James:
+  rookie: true
+  free_times:
+    - Mon 14:00-23:59
+    - Wed 12:00-17:00
+    - Fri 11:00-14:00
+    - Fri 15:00-23:59
+Murray:
+  free_times:
+    - Mon 08:00-12:00
+    - Mon 13:00-16:00
+    - Mon 17:00-23:59
+    - Tue 08:00-13:00
+    - Tue 14:00-23:59
+    - Wed 12:00-23:59
+    - Thu 10:00-11:00
+    - Thu 12:00-18:00
+    - Fri 08:00-14:00
+    - Fri 16:00-23:59
+Kier:
+  rookie: true
+  free_times:
+    - Wed 13:00-23:59
+    - Tue 14:00-23:59
+    - Thu 14:00-23:59
+Ed:
+  rookie: true
+  free_times:
+    - Wed 13:00-23:59
