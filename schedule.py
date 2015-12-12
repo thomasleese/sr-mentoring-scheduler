@@ -189,6 +189,13 @@ class SuitableMentor:
         self.max_journey_speed = max(self.journey_there_speed,
                                      self.journey_back_speed)
 
+    def find_partners(self, all_mentors):
+        other_mentors = self.team.find_suitable_mentors(all_mentors)
+        return [suitable_mentor
+                for suitable_mentor in other_mentors
+                if suitable_mentor.mentor != self.mentor
+                and suitable_mentor.meeting_time == self.meeting_time]
+
 
 class Mentor:
     """

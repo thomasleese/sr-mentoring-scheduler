@@ -11,11 +11,24 @@
 
   <body>
     <div class="container m-t-3 m-b-3">
-      <h1>Mentoring Scheduler</h1>
-      <p class="lead m-b-2">Yay robots! Yay mentors! Yay teams!</p>
+      <div class="row">
+        <div class="col-sm-5">
+          <h1>Mentoring Scheduler</h1>
+          <p class="lead m-b-2">Yay robots! Yay mentors! Yay teams!</p>
+        </div>
+
+        <div class="col-sm-7">
+          <nav class="nav nav-inline">
+            <a class="nav-link disabled" href="#">Mentors:</a>
+            {% for mentor in mentors | sort(attribute='name') %}
+              <a class="nav-link" href="#{{ mentor.name }}">{{ mentor.name }}</a>
+            {% endfor %}
+          </nav>
+        </div>
+      </div>
 
       {% for mentor in mentors | sort(attribute='name') %}
-        <div class="card">
+        <div class="card" id="{{ mentor.name }}">
           <div class="card-block">
             <h4 class="card-title">{{ mentor.name }} {% if mentor.rookie %}<span class="label label-warning">Rookie</span>{% endif %}</h4>
             <p class="card-text">{{ mentor.find_suitable_teams(teams) | list | length }} plausible teams.</p>
@@ -29,6 +42,7 @@
                 <th>Meeting Time</th>
                 <th>Time to get there</th>
                 <th>Time to get back</th>
+                <th>Possible Mentoring Partners</th>
               </tr>
             </thead>
 
@@ -40,6 +54,11 @@
                   <td>{{ suitable_mentor.meeting_time }}</td>
                   <td>{{ suitable_mentor.journey_there }}</td>
                   <td>{{ suitable_mentor.journey_back }}</td>
+                  <td>
+                    {% for partner in suitable_mentor.find_partners(mentors) | sort(attribute='mentor.name') %}
+                      <span class="label label-{% if partner.mentor.rookie %}warning{% else %}primary{% endif %}">{{ partner.mentor.name }}</span>
+                    {% endfor %}
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>
