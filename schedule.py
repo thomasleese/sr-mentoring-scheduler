@@ -39,10 +39,10 @@ class TimePeriod:
         self.start_time = datetime.strptime(parts[0], '%H:%M')
         self.end_time = datetime.strptime(parts[1], '%H:%M')
 
-        if travel_time is not None:
-            self.travel_time = timedelta(minutes=travel_time)
-        else:
-            self.travel_time = timedelta(minutes=0)
+        if travel_time is None:
+            travel_time = timedelta(minutes=0)
+
+        self.travel_time = travel_time
 
     @staticmethod
     def _parse_day(string):
@@ -57,17 +57,23 @@ class TimePeriod:
         return self.start_time - self.travel_time, \
             self.end_time + self.travel_time
 
-    def fits_in(self, other_period):
+    def fits_in(self, other_period, tolerance=0):
         """Check with this time period fits into the other time period."""
 
         if self.day != other_period.day:
             return False
 
-        my_times = self.get_times()
-        other_times = other_period.get_times()
+        my_times_a, my_times_b = self.get_times()
+        other_times_a, other_times_b = other_period.get_times()
 
-        return my_times[0] >= other_times[0] \
-            and my_times[1] <= other_times[1]
+        tolerance = timedelta(minutes=tolerance)
+        my_times_a += tolerance
+        my_times_b -= tolerance
+        other_times_a -= tolerance
+        other_times_b += tolerance
+
+        return my_times_a >= other_times_a \
+            and my_times_b <= other_times_b
 
 
 class Team:
@@ -87,14 +93,15 @@ class Team:
         A list of parseable time periods.
     """
 
-    def __init__(self, tla, arranged=False, travel_time=None, meeting_times=None):
+    def __init__(self, tla, arranged=False, travel_time=None,
+                 meeting_times=None):
         if meeting_times is None:
             meeting_times = []
 
         self.tla = tla
         self.arranged = arranged
-        self.travel_time = travel_time
-        self.meeting_times = [TimePeriod(s, travel_time)
+        self.travel_time = timedelta(minutes=travel_time or 0)
+        self.meeting_times = [TimePeriod(s, self.travel_time)
                               for s in meeting_times]
 
         if not self.arranged:
@@ -104,14 +111,14 @@ class Team:
                 print('Warning: {} has no travel time.'.format(self.tla))
 
     def __str__(self):
-        return self.tla
+        return '{} ({})'.format(self.tla, self.travel_time)
 
-    def find_suitable_mentors(self, all_mentors):
+    def find_suitable_mentors(self, all_mentors, tolerance=0):
         """Return a list of suitable mentors from all the mentors."""
 
         return [mentor
                 for mentor in all_mentors
-                if mentor.is_suitable_for(self)]
+                if mentor.is_suitable_for(self, tolerance)]
 
 
 class Mentor:
@@ -141,16 +148,16 @@ class Mentor:
 
     def __str__(self):
         if self.rookie:
-            return '{} (R)'.format(self.name)
+            return '{}*'.format(self.name)
         else:
             return self.name
 
-    def is_suitable_for(self, team):
+    def is_suitable_for(self, team, tolerance=0):
         """Check whether a mentor is suitable for a team."""
 
         for free_time in self.free_times:
             for meeting_time in team.meeting_times:
-                if meeting_time.fits_in(free_time):
+                if meeting_time.fits_in(free_time, tolerance):
                     return True
         return False
 
@@ -162,13 +169,26 @@ def schedule(teams, mentors):
         if team.arranged:
             continue
 
-        suitable_mentors = team.find_suitable_mentors(mentors)
+        suitable_mentors = set(team.find_suitable_mentors(mentors))
+        close_call_mentors = set(team.find_suitable_mentors(mentors, 10))
+
+        close_call_mentors -= suitable_mentors
+
         if all(mentor.rookie for mentor in suitable_mentors):
             suitable_mentors = []
 
-        print('{}: {}'
-              .format(team,
-                      ', '.join(str(mentor) for mentor in suitable_mentors)))
+        if suitable_mentors and close_call_mentors:
+            print('{}: {} ({})'
+                  .format(team,
+                          ', '.join(str(x) for x in suitable_mentors),
+                          ', '.join(str(x) for x in close_call_mentors)))
+        if close_call_mentors:
+            print('{}: ({})'
+                  .format(team,
+                          ', '.join(str(x) for x in close_call_mentors)))
+        else:
+            print('{}: {}'
+                  .format(team, ', '.join(str(x) for x in suitable_mentors)))
 
 
 def main():
