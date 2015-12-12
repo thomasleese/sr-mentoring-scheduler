@@ -19,7 +19,7 @@ DAYS_OF_THE_WEEK = {
     'Sunday': 7
 }
 
-MAX_SPEED = 50  # km/h
+MAX_SPEED = 60  # km/h
 
 
 class Geography:
