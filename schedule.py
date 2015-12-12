@@ -5,6 +5,7 @@ import pickle
 
 from geopy.distance import vincenty
 from geopy.geocoders import Nominatim
+import jinja2
 import yaml
 
 
@@ -17,6 +18,8 @@ DAYS_OF_THE_WEEK = {
     'Saturday': 6,
     'Sunday': 7
 }
+
+MAX_SPEED = 50  # km/h
 
 
 class Geography:
@@ -65,17 +68,22 @@ class TimePeriod:
 
     def __init__(self, string):
         parts = string.split(' ')
-        self.day = self._parse_day(parts[0])
+        self.day, self.day_string = self._parse_day(parts[0])
 
         parts = parts[1].split('-')
         self.start_time = datetime.strptime(parts[0], '%H:%M')
         self.end_time = datetime.strptime(parts[1], '%H:%M')
 
+    def __str__(self):
+        return '{} {}-{}'.format(self.day_string[:3],
+                                 self.start_time.strftime('%H:%M'),
+                                 self.end_time.strftime('%H:%M'))
+
     @staticmethod
     def _parse_day(string):
         for day, number in DAYS_OF_THE_WEEK.items():
             if day.startswith(string):
-                return number
+                return number, day
         raise ValueError('Could not understand day: {}'.format(string))
 
     def get_times(self):
@@ -83,7 +91,7 @@ class TimePeriod:
 
         return self.start_time, self.end_time
 
-    def fits_in(self, other_period, tolerance=0):
+    def fits_in(self, other_period):
         """Check with this time period fits into the other time period."""
 
         if self.day != other_period.day:
@@ -92,14 +100,8 @@ class TimePeriod:
         my_times_a, my_times_b = self.get_times()
         other_times_a, other_times_b = other_period.get_times()
 
-        tolerance = timedelta(minutes=tolerance)
-        my_times_a += tolerance
-        my_times_b -= tolerance
-        other_times_a -= tolerance
-        other_times_b += tolerance
-
-        return my_times_a >= other_times_a \
-            and my_times_b <= other_times_b
+        return my_times_a > other_times_a \
+            and my_times_b < other_times_b
 
 
 class Team:
@@ -137,8 +139,10 @@ class Team:
             a = geography.geocode(my_postcode)
             b = (location.latitude, location.longitude)
             self.distance = geography.distance((a.latitude, a.longitude), b)
+            self.distance_km = self.distance / 1000
         else:
             self.distance = None
+            self.distance_km = None
             print('Warning: {} has no distance.'.format(self.tla))
 
     def __str__(self):
@@ -147,9 +151,43 @@ class Team:
     def find_suitable_mentors(self, all_mentors):
         """Return a list of suitable mentors from all the mentors."""
 
-        return [mentor
-                for mentor in all_mentors
-                if mentor.is_suitable_for(self)]
+        if self.arranged:
+            return []
+
+        for mentor in all_mentors:
+            suitable_mentor = mentor.is_suitable_for(self)
+            if suitable_mentor:
+                yield suitable_mentor
+
+
+class SuitableMentor:
+    def __init__(self, mentor, team, meeting_time, free_time):
+        self.mentor = mentor
+        self.team = team
+
+        self.meeting_time = meeting_time
+
+        meeting_time_a, meeting_time_b = meeting_time.get_times()
+        free_time_a, free_time_b = free_time.get_times()
+
+        self.journey_there = meeting_time_a - free_time_a
+        self.journey_back = free_time_b - meeting_time_b
+
+        self.min_journey_time = min(self.journey_there, self.journey_back)
+        self.max_journey_time = max(self.journey_there, self.journey_back)
+
+        self.min_journey_speed = team.distance / \
+            self.min_journey_time.total_seconds()
+
+        self.journey_there_speed = team.distance_km / \
+            (self.journey_there.total_seconds() / 60 / 60)
+        self.journey_back_speed = team.distance_km / \
+            (self.journey_back.total_seconds() / 60 / 60)
+
+        self.min_journey_speed = min(self.journey_there_speed,
+                                     self.journey_back_speed)
+        self.max_journey_speed = max(self.journey_there_speed,
+                                     self.journey_back_speed)
 
 
 class Mentor:
@@ -183,29 +221,39 @@ class Mentor:
         else:
             return self.name
 
-    def is_suitable_for(self, team, tolerance=0):
+    def is_suitable_for(self, team):
         """Check whether a mentor is suitable for a team."""
 
         for free_time in self.free_times:
             for meeting_time in team.meeting_times:
-                if meeting_time.fits_in(free_time, tolerance):
-                    return True
-        return False
+                if meeting_time.fits_in(free_time):
+                    suitable_mentor = SuitableMentor(self, team, meeting_time,
+                                                     free_time)
+                    if suitable_mentor.max_journey_speed < MAX_SPEED:
+                        return suitable_mentor
+        return None
+
+    def find_suitable_teams(self, all_teams):
+        """Return a list of suitable teams from all the mentors."""
+
+        for team in all_teams:
+            if team.arranged:
+                continue
+
+            suitable_mentor = self.is_suitable_for(team)
+            if suitable_mentor:
+                yield suitable_mentor
 
 
 def schedule(teams, mentors):
     """Schedule mentoring for some teams and some mentors."""
 
-    for team in teams:
-        if team.arranged:
-            continue
+    with open('template.html') as file:
+        template = jinja2.Template(file.read())
 
-        suitable_mentors = team.find_suitable_mentors(mentors)
-        if all(mentor.rookie for mentor in suitable_mentors):
-            suitable_mentors = []
-
-        print('{}: {}'
-              .format(team, ', '.join(str(x) for x in suitable_mentors)))
+    output = template.render(teams=teams, mentors=mentors)
+    with open('output.html', 'w') as file:
+        file.write(output)
 
 
 def main():
