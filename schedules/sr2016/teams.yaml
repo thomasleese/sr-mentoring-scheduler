@@ -1,58 +1,180 @@
-  BDF:
-    travel_time: 180
-    meeting_times:
-      - Thursday 16:30-17:30
-  BPV:
-    travel_time: 45
-    meeting_times:
-      - Wednesday 08:45-10:15
-  BRK:
-    travel_time: 65
-    meeting_times:
-      - Wednesday 14:10-16:20
-  BWS:
-    travel_time: 70
-    meeting_times:
-      - Monday 12:00-13:00
-      - Wednesday 12:00-13:00
-  CAT:
-    travel_time: 240
-    meeting_times:
-      - Wednesday 17:00-18:00
-  CRB:
-    travel_time: 0
-    meeting_times: []
-  HRS:
-    travel_time: 210
-    meeting_times:
-      - Wed 15:00-16:00
-      - Sat 10:00-16:00
-  HSO:
-    travel_time: 180
-    meeting_times:
-      - Tues 12:00-13:00
-      - Tues 16:00-18:00
-      - Fri 12:00-13:00
-      - Fri 16:00-18:00
-  KDE:
-    arranged: true
-    meeting_times:
-      - Fri 19:00-20:00
-  QMC:
-    travel_time: 90
-    meeting_times:
-      - Wed 15:10-16:30
-  RGS:
-    travel_time: 100
-    meeting_times:
-      - Tue 16:00-17:00
-  SWI:
-    travel_time: 60
-    meeting_times: []
-  TLC:
-    arranged: true
-    meeting_times: []
-  TTN:
-    travel_time: 25
-    meeting_times:
-      - Wed 11:50-12:50
+ABD:
+  postcode: OX14 1DE
+
+BDF:
+  postcode: MK40 2TU
+  meeting_times:
+    - Thursday 16:30-17:30
+
+BGS:
+  postcode: BS8 1SR
+
+BPV:
+  postcode: SO50 5ZA
+  meeting_times:
+    - Wednesday 08:45-10:15
+
+BRK:
+  postcode: SO42 7ZE
+  meeting_times:
+    - Wednesday 14:10-16:20
+
+BRN:
+  postcode: BS4 5RQ
+
+BTE:
+  postcode: BS34 8SF
+
+BWS:
+  postcode: SP1 2ED
+  meeting_times:
+    - Monday 12:00-13:00
+    - Wednesday 12:00-13:00
+
+CAT:
+  postcode: CB4 1NQ
+  meeting_times:
+    - Wednesday 17:00-18:00
+
+CBG:
+  postcode: KT3 3TU
+
+CDU:
+  postcode: LU7 2AE
+
+CGS:
+  postcode: BS6 5RD
+
+CHB:
+  postcode: B14 7QJ
+
+CHW:
+  postcode: OX2 7EE
+
+CLC:
+  postcode: PL12 4AE
+
+CLF:
+  postcode: BS9 3UD
+
+CLY:
+  postcode: RH12 2EJ
+
+COR:
+  postcode: SN13 9DF
+
+CPR:
+  postcode: OX26 4RS
+
+CRB:
+  postcode: TN17 3JD
+
+DUL:
+  postcode: SE21 7LD
+
+GRD:
+  postcode: BS20 7QR
+
+HAM:
+  postcode: TW12 3HD
+
+HAY:
+  postcode: HA5 2LX
+
+HLB:
+  postcode: SG13 7NU
+
+HRS:
+  postcode: CB2 8PE
+  meeting_times:
+    - Wed 15:00-16:00
+    - Sat 10:00-16:00
+
+HSO:
+  postcode: OX3 7TD
+  meeting_times:
+    - Tues 12:00-13:00
+    - Tues 16:00-18:00
+    - Fri 12:00-13:00
+    - Fri 16:00-18:00
+
+HZW:
+  postcode: RH10 1SX
+
+KDE:
+  arranged: true
+  postcode: RG14 2NF
+  meeting_times:
+    - Fri 19:00-20:00
+
+KEG:
+  postcode: CM1 3SX
+
+KES:
+  postcode: SO15 5UQ
+
+KEV:
+  postcode: IP33 3BH
+
+KTC:
+  postcode: NN2 7HR
+
+LSS:
+  postcode: CV21 3AG
+
+MCS:
+  postcode: OX4 1DZ
+
+MFG:
+  postcode: WF14 9EZ
+
+PSC:
+  postcode: SO22 6RX
+
+QEH:
+  postcode: BS8 1JX
+
+QMC:
+  postcode: RG21 3HF
+  meeting_times:
+    - Wed 15:10-16:30
+
+RGS:
+  postcode: GU1 3BB
+  meeting_times:
+    - Tue 16:00-17:00
+
+SCS:
+  postcode: WF2 0PD
+
+SEN:
+  postcode: SS0 0RG
+
+SWI:
+  postcode: SP1 3JJ
+  meeting_times: []
+
+TBG:
+  postcode: TQ2 7EL
+
+TLC:
+  arranged: true
+  postcode: GY3 5UD
+  meeting_times: []
+
+TTN:
+  postcode: SO15 5RL
+  meeting_times:
+    - Wed 11:50-12:50
+
+TWG:
+  postcode: TN4 9XB
+
+UVH:
+  postcode: LA12 0EB
+
+WGS:
+  postcode: PE13 1JX
+
+WHS:
+  postcode: SS0 0BS
