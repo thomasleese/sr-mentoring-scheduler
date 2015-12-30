@@ -64,3 +64,13 @@ Ed:
   rookie: true
   free_times:
     - Wed 13:00-23:59
+
+Rashmi:
+  rookie: true
+  free_times:
+    - Mon 16:00-20:00
+    - Tue 15:00-17:00
+    - Wed 13:00-17:00
+    - Thu 11:00-13:00
+    - Thu 15:00-17:00
+    - Fri 16:00-20:00
